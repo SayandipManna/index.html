@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wheel Game</title>
+    <style>
+        #wheel {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #f1f1f1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #pointer {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 15px 26.0px 15px;
+            border-color: transparent transparent #000 transparent;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            transform-origin: 50% 100%;
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        #spinBtn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="wheel"></div>
+    <button id="spinBtn">Spin</button>
+    <div id="result"></div>
+
+    <script>
+        // Set up variables
+        const wheel = document.getElementById('wheel');
+        const pointer = document.getElementById('pointer');
+        const spinBtn = document.getElementById('spinBtn');
+        const result = document.getElementById('result');
+
+        const prizes = ['Prize 1', 'Prize 2', 'Prize 3', 'Prize 4', 'Prize 5', 'Prize 6', 'Prize 7', 'Prize 8'];
+
+        let spinning = false;
+
+        // Function to handle the spinning animation
+        const spin = () => {
+            // Randomly select a prize
+            const randomPrize = Math.floor(Math.random() * prizes.length);
+
+            // Calculate the rotation angle
+            const angle = randomPrize * (360 / prizes.length) + 720;
+
+            // Disable the button while spinning
+            spinBtn.disabled = true;
+            spinning = true;
+
+            // Apply the rotation animation
+            pointer.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+
+            // Wait for the animation to finish
+            setTimeout(() => {
+                // Enable the button after spinning
+                spinBtn.disabled = false;
+                spinning = false;
+
+                // Display the result
+                result.textContent = `You won ${prizes[randomPrize]}!`;
+            }, 4000);
+        };
+
+        // Event listener for the spin button
+        spinBtn.addEventListener('click', () => {
+            if (!spinning) {
+                spin();
+            }
+        });
+    </script>
+</body>
+</html>
+
